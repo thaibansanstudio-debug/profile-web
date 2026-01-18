@@ -1,39 +1,54 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>Admin</title></head>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{background:#020617;color:white;font-family:sans-serif;padding:20px}
+.card{background:#1e293b;padding:20px;border-radius:12px;max-width:400px;margin:auto}
+input,button{width:100%;padding:10px;margin-top:10px;border-radius:8px;border:none}
+button{background:#22c55e;font-weight:bold}
+</style>
+</head>
 <body>
 
-<h2>👑 Admin Panel</h2>
-
-<input id="target" placeholder="ชื่อผู้ใช้"><br>
-<input id="amount" type="number" placeholder="จำนวนเงิน"><br><br>
-
-<button onclick="setMoney()">Set เงิน</button>
-<button onclick="addMoney()">เพิ่มเงิน</button>
-<button onclick="removeMoney()">ลดเงิน</button>
-
-<p id="result"></p>
+<div class="card">
+    <h2>🛠 Admin Panel</h2>
+    <p>เงินผู้ใช้: <span id="money"></span></p>
+    <input id="amount" type="number" placeholder="จำนวนเงิน">
+    <button onclick="setMoney()">SET</button>
+    <button onclick="addMoney()">+</button>
+    <button onclick="subMoney()">-</button>
+    <button onclick="logout()">Logout</button>
+</div>
 
 <script>
-if(localStorage.getItem("role")!=="admin"){
-    location.href="login.html";
-}
+let data = JSON.parse(localStorage.getItem("login"));
+if(!data || data.role !== "admin") location.href="login.html";
+
+money.innerText = data.money;
 
 function setMoney(){
-    localStorage.setItem(target.value, amount.value);
-    result.innerText="ตั้งเงินเรียบร้อย";
+    data.money = Number(amount.value);
+    save();
 }
 function addMoney(){
-    let m = Number(localStorage.getItem(target.value)||0);
-    localStorage.setItem(target.value, m+Number(amount.value));
-    result.innerText="เพิ่มเงินเรียบร้อย";
+    data.money += Number(amount.value);
+    save();
 }
-function removeMoney(){
-    let m = Number(localStorage.getItem(target.value)||0);
-    localStorage.setItem(target.value, m-Number(amount.value));
-    result.innerText="ลดเงินเรียบร้อย";
+function subMoney(){
+    data.money -= Number(amount.value);
+    save();
+}
+function save(){
+    localStorage.setItem("login",JSON.stringify(data));
+    money.innerText = data.money;
+}
+function logout(){
+    localStorage.clear();
+    location.href="login.html";
 }
 </script>
-
 </body>
 </html>
