@@ -1,15 +1,33 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><title>User</title></head>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>User</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{background:#020617;color:white;font-family:sans-serif;text-align:center;padding-top:100px}
+.card{background:#1e293b;padding:30px;border-radius:12px;display:inline-block}
+button{margin-top:15px;padding:10px 20px;border-radius:8px;border:none;background:#ef4444;color:white}
+</style>
+</head>
 <body>
 
-<h2>💰 เงินของคุณ</h2>
-<p id="money"></p>
+<div class="card">
+    <h2>👤 User</h2>
+    <p>💰 เงินของคุณ</p>
+    <h1 id="money"></h1>
+    <button onclick="logout()">Logout</button>
+</div>
 
 <script>
-const u = localStorage.getItem("username");
-money.innerText = "เงินคงเหลือ: " + localStorage.getItem(u);
-</script>
+let data = JSON.parse(localStorage.getItem("login"));
+if(!data || data.role !== "user") location.href="login.html";
+money.innerText = data.money;
 
+function logout(){
+    localStorage.clear();
+    location.href="login.html";
+}
+</script>
 </body>
 </html>
