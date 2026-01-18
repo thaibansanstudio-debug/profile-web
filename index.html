@@ -2,139 +2,19 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>ThaiBanSan Studio</title>
+<title>Profile Web</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-:root{
-  --bg:#0f172a;
-  --card:#020617;
-  --text:#e5e7eb;
-  --main:#22c55e;
-  --danger:#ef4444;
-}
-*{box-sizing:border-box;font-family:Segoe UI,Arial}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-.card{
-  background:var(--card);
-  padding:20px;
-  border-radius:12px;
-  width:100%;
-  max-width:380px;
-  box-shadow:0 0 30px #000;
-}
-h2{text-align:center;margin-bottom:15px}
-input,button{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
-  border:none;
-  border-radius:8px;
-}
-input{background:#020617;color:#fff;border:1px solid #1e293b}
-button{
-  background:var(--main);
-  color:#000;
-  font-weight:bold;
-  cursor:pointer;
-}
-button.red{background:var(--danger);color:#fff}
-.hide{display:none}
-.money{
-  font-size:28px;
-  text-align:center;
-  margin:15px 0;
-  color:var(--main);
-}
-.admin button{margin-top:6px}
-small{text-align:center;display:block;margin-top:10px;color:#64748b}
+body{background:#020617;color:white;font-family:sans-serif;text-align:center;padding-top:100px}
+a{display:inline-block;margin:10px;padding:10px 20px;background:#38bdf8;color:black;border-radius:10px;text-decoration:none}
 </style>
 </head>
-
 <body>
 
-<!-- LOGIN -->
-<div class="card" id="login">
-  <h2>🔐 Login</h2>
-  <input id="user" placeholder="Username">
-  <input id="pass" placeholder="Password" type="password">
-  <button onclick="login()">เข้าสู่ระบบ</button>
-  <small>admin / 1234</small>
-</div>
+<h1>🌐 Profile A</h1>
+<p>เว็บตัวอย่างระบบ Login + เงิน</p>
 
-<!-- DASHBOARD -->
-<div class="card hide" id="dash">
-  <h2>👤 โปรไฟล์</h2>
-  <div class="money" id="money">0 ฿</div>
-
-  <div class="admin" id="admin">
-    <input id="amount" type="number" placeholder="จำนวนเงิน">
-    <button onclick="add()">➕ เพิ่มเงิน</button>
-    <button onclick="sub()" class="red">➖ ลดเงิน</button>
-    <button onclick="setMoney()">✏️ ตั้งค่าเงิน</button>
-  </div>
-
-  <button onclick="logout()" style="margin-top:15px">ออกจากระบบ</button>
-</div>
-
-<script>
-let money = Number(localStorage.getItem("money")) || 0
-
-function login(){
-  const u=user.value
-  const p=pass.value
-  if(u==="admin" && p==="1234"){
-    loginBox(false)
-    admin.style.display="block"
-  }else if(u && p){
-    loginBox(false)
-    admin.style.display="none"
-  }else{
-    alert("กรอกข้อมูล")
-  }
-}
-
-function loginBox(show){
-  login.classList.toggle("hide",!show)
-  dash.classList.toggle("hide",show)
-  update()
-}
-
-function update(){
-  money = Number(localStorage.getItem("money")) || 0
-  document.getElementById("money").innerText = money+" ฿"
-}
-
-function add(){
-  money += Number(amount.value||0)
-  save()
-}
-function sub(){
-  money -= Number(amount.value||0)
-  save()
-}
-function setMoney(){
-  money = Number(amount.value||0)
-  save()
-}
-function save(){
-  localStorage.setItem("money",money)
-  update()
-}
-function logout(){
-  loginBox(true)
-}
-
-update()
-</script>
+<a href="login.html">เข้าสู่ระบบ</a>
 
 </body>
 </html>

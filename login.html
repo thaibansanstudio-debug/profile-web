@@ -1,35 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="th">
 <head>
 <meta charset="UTF-8">
 <title>Login</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+    background:#0f172a;
+    font-family:sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    color:white;
+}
+.box{
+    background:#1e293b;
+    padding:30px;
+    border-radius:12px;
+    width:100%;
+    max-width:350px;
+}
+input,button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border-radius:8px;
+    border:none;
+}
+button{
+    background:#38bdf8;
+    font-weight:bold;
+}
+</style>
 </head>
 <body>
 
-<h2>Login</h2>
-<input id="user" placeholder="username"><br>
-<input id="pass" type="password" placeholder="password"><br>
-<button onclick="login()">Login</button>
+<div class="box">
+    <h2>🔐 Login</h2>
+    <input id="user" placeholder="Username">
+    <input id="pass" type="password" placeholder="Password">
+    <button onclick="login()">เข้าสู่ระบบ</button>
+    <p id="msg"></p>
+</div>
 
 <script>
+const accounts = {
+    admin:{pass:"admin123",role:"admin",money:1000},
+    user:{pass:"user123",role:"user",money:100}
+};
+
 function login(){
     const u = user.value;
     const p = pass.value;
 
-    if(u==="admin" && p==="admin123"){
-        localStorage.setItem("role","admin");
-        location.href="admin.html";
-    }
-    else{
-        localStorage.setItem("role","user");
+    if(accounts[u] && accounts[u].pass === p){
+        localStorage.setItem("login",JSON.stringify(accounts[u]));
         localStorage.setItem("username",u);
-        if(!localStorage.getItem(u)){
-            localStorage.setItem(u,1000); // เงินเริ่มต้น
-        }
-        location.href="user.html";
+        location.href = accounts[u].role === "admin" ? "admin.html" : "user.html";
+    }else{
+        msg.innerText = "❌ ข้อมูลไม่ถูกต้อง";
     }
 }
 </script>
-
 </body>
 </html>
