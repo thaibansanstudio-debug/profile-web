@@ -2,66 +2,127 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login / Register</title>
 <style>
-body{
-    background:#0f172a;
-    font-family:sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    height:100vh;
-    color:white;
+body {
+  font-family: Arial, sans-serif;
+  background: #0f172a;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
-.box{
-    background:#1e293b;
-    padding:30px;
-    border-radius:12px;
-    width:100%;
-    max-width:350px;
+.box {
+  background: #020617;
+  padding: 30px;
+  border-radius: 12px;
+  width: 320px;
+  box-shadow: 0 0 20px #000;
 }
-input,button{
-    width:100%;
-    padding:10px;
-    margin-top:10px;
-    border-radius:8px;
-    border:none;
+h2 { text-align: center; }
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: none;
 }
-button{
-    background:#38bdf8;
-    font-weight:bold;
+input {
+  background: #020617;
+  border: 1px solid #334155;
+  color: white;
 }
+button {
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+}
+button:hover {
+  background: #1d4ed8;
+}
+.link {
+  text-align: center;
+  margin-top: 10px;
+  cursor: pointer;
+  color: #38bdf8;
+}
+.hide { display: none; }
 </style>
 </head>
 <body>
 
-<div class="box">
-    <h2>🔐 Login</h2>
-    <input id="user" placeholder="Username">
-    <input id="pass" type="password" placeholder="Password">
-    <button onclick="login()">เข้าสู่ระบบ</button>
-    <p id="msg"></p>
+<div class="box" id="registerBox">
+  <h2>สมัครสมาชิก</h2>
+  <input id="regUser" placeholder="ชื่อผู้ใช้">
+  <input id="regPass" type="password" placeholder="รหัสผ่าน">
+  <button onclick="register()">สมัคร</button>
+  <div class="link" onclick="showLogin()">มีบัญชีแล้ว? ล็อกอิน</div>
+</div>
+
+<div class="box hide" id="loginBox">
+  <h2>เข้าสู่ระบบ</h2>
+  <input id="loginUser" placeholder="ชื่อผู้ใช้">
+  <input id="loginPass" type="password" placeholder="รหัสผ่าน">
+  <button onclick="login()">เข้าสู่ระบบ</button>
+  <div class="link" onclick="showRegister()">สมัครสมาชิก</div>
+</div>
+
+<div class="box hide" id="dashboard">
+  <h2>ยินดีต้อนรับ</h2>
+  <p id="welcome"></p>
+  <button onclick="logout()">ออกจากระบบ</button>
 </div>
 
 <script>
-const accounts = {
-    admin:{pass:"admin123",role:"admin",money:1000},
-    user:{pass:"user123",role:"user",money:100}
-};
+function register() {
+  const user = regUser.value;
+  const pass = regPass.value;
+  if (!user || !pass) return alert("กรอกข้อมูลให้ครบ");
+  localStorage.setItem("user_" + user, pass);
+  alert("สมัครสมาชิกสำเร็จ");
+  showLogin();
+}
 
-function login(){
-    const u = user.value;
-    const p = pass.value;
+function login() {
+  const user = loginUser.value;
+  const pass = loginPass.value;
+  const saved = localStorage.getItem("user_" + user);
+  if (saved === pass) {
+    localStorage.setItem("login", user);
+    showDashboard();
+  } else {
+    alert("ชื่อผู้ใช้หรือรหัสผ่านผิด");
+  }
+}
 
-    if(accounts[u] && accounts[u].pass === p){
-        localStorage.setItem("login",JSON.stringify(accounts[u]));
-        localStorage.setItem("username",u);
-        location.href = accounts[u].role === "admin" ? "admin.html" : "user.html";
-    }else{
-        msg.innerText = "❌ ข้อมูลไม่ถูกต้อง";
-    }
+function logout() {
+  localStorage.removeItem("login");
+  showLogin();
+}
+
+function showLogin() {
+  registerBox.classList.add("hide");
+  dashboard.classList.add("hide");
+  loginBox.classList.remove("hide");
+}
+
+function showRegister() {
+  loginBox.classList.add("hide");
+  registerBox.classList.remove("hide");
+}
+
+function showDashboard() {
+  loginBox.classList.add("hide");
+  registerBox.classList.add("hide");
+  dashboard.classList.remove("hide");
+  welcome.innerText = "คุณคือ: " + localStorage.getItem("login");
+}
+
+if (localStorage.getItem("login")) {
+  showDashboard();
 }
 </script>
+
 </body>
 </html>
