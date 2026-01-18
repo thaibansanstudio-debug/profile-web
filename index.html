@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+
+<style>
+:root{
+    --main:#4f8cff;
+    --bg:#f4f6fb;
+    --card:#ffffff;
+    --text:#333;
+}
+.dark{
+    --bg:#121212;
+    --card:#1e1e1e;
+    --text:#f5f5f5;
+}
+
+body{
+    margin:0;
+    font-family:Segoe UI, sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    transition:0.3s;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:20px;
+}
+
+header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.card{
+    background:var(--card);
+    padding:20px;
+    border-radius:15px;
+    margin-top:20px;
+}
+
+.btn{
+    background:var(--main);
+    color:#fff;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    margin:5px 0;
+}
+
+a{
+    color:var(--main);
+    text-decoration:none;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<header>
+    <h2>🌐 Dashboard</h2>
+    <button class="btn" onclick="toggleDark()">🌙</button>
+</header>
+
+<div class="card">
+    <h3>👤 ผู้ใช้</h3>
+    <p id="username">-</p>
+</div>
+
+<div class="card">
+    <h3>💰 เงินคงเหลือ</h3>
+    <h1 id="money">0</h1>
+</div>
+
+<div class="card">
+    <h3>🎮 ลิงก์เซิร์ฟเวอร์</h3>
+    <p>🟢 Minecraft: <b>play.example.com</b></p>
+    <p>💬 Discord: <a href="#">เข้าดิส</a></p>
+</div>
+
+<div class="card">
+    <button class="btn" onclick="logout()">ออกจากระบบ</button>
+</div>
+
+</div>
+
+<script>
+function toggleDark(){
+    document.body.classList.toggle("dark");
+}
+
+const user = localStorage.getItem("username");
+if(!user){
+    location.href="login.html";
+}
+
+document.getElementById("username").innerText = user;
+document.getElementById("money").innerText =
+    localStorage.getItem(user) || 0;
+
+function logout(){
+    localStorage.clear();
+    location.href="login.html";
+}
+</script>
+
+</body>
+</html>

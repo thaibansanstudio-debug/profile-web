@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><title>Admin</title></head>
+<body>
+
+<h2>👑 Admin Panel</h2>
+
+<input id="target" placeholder="ชื่อผู้ใช้"><br>
+<input id="amount" type="number" placeholder="จำนวนเงิน"><br><br>
+
+<button onclick="setMoney()">Set เงิน</button>
+<button onclick="addMoney()">เพิ่มเงิน</button>
+<button onclick="removeMoney()">ลดเงิน</button>
+
+<p id="result"></p>
+
+<script>
+if(localStorage.getItem("role")!=="admin"){
+    location.href="login.html";
+}
+
+function setMoney(){
+    localStorage.setItem(target.value, amount.value);
+    result.innerText="ตั้งเงินเรียบร้อย";
+}
+function addMoney(){
+    let m = Number(localStorage.getItem(target.value)||0);
+    localStorage.setItem(target.value, m+Number(amount.value));
+    result.innerText="เพิ่มเงินเรียบร้อย";
+}
+function removeMoney(){
+    let m = Number(localStorage.getItem(target.value)||0);
+    localStorage.setItem(target.value, m-Number(amount.value));
+    result.innerText="ลดเงินเรียบร้อย";
+}
+</script>
+
+</body>
+</html>
