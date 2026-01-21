@@ -1,54 +1,64 @@
-<!DOCTYPE html>
-<html lang="th">
-<head>
-<meta charset="UTF-8">
-<title>Admin</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-body{background:#020617;color:white;font-family:sans-serif;padding:20px}
-.card{background:#1e293b;padding:20px;border-radius:12px;max-width:400px;margin:auto}
-input,button{width:100%;padding:10px;margin-top:10px;border-radius:8px;border:none}
-button{background:#22c55e;font-weight:bold}
-</style>
-</head>
-<body>
-
-<div class="card">
-    <h2>🛠 Admin Panel</h2>
-    <p>เงินผู้ใช้: <span id="money"></span></p>
-    <input id="amount" type="number" placeholder="จำนวนเงิน">
-    <button onclick="setMoney()">SET</button>
-    <button onclick="addMoney()">+</button>
-    <button onclick="subMoney()">-</button>
-    <button onclick="logout()">Logout</button>
-</div>
-
 <script>
-let data = JSON.parse(localStorage.getItem("login"));
-if(!data || data.role !== "admin") location.href="login.html";
+const WEBHOOK_URL = "https://discord.com/api/webhooks/1463506394585239773/09qcuC4S9jlZNJocIVa5id2BQQObYYeNQj7JPPSu6VWcFFPxY84jX6UVFStNSrLjRTaf";
 
-money.innerText = data.money;
+let login = localStorage.getItem("login");
+let users = JSON.parse(localStorage.getItem("users")) || {};
+
+if(!login || !users[login] || users[login].role !== "admin"){
+  location.href="login.html";
+}
+
+let targetUser = login;
+money.innerText = "💰 " + users[targetUser].money;
 
 function setMoney(){
-    data.money = Number(amount.value);
-    save();
+  let t = target.value;
+  if(!users[t]) return alert("ไม่พบผู้ใช้");
+  targetUser = t;
+  users[t].money = Number(amount.value);
+  logDiscord("SET");
+  save();
 }
+
 function addMoney(){
-    data.money += Number(amount.value);
-    save();
+  users[targetUser].money += Number(amount.value);
+  logDiscord("ADD");
+  save();
 }
+
 function subMoney(){
-    data.money -= Number(amount.value);
-    save();
+  users[targetUser].money -= Number(amount.value);
+  logDiscord("SUB");
+  save();
 }
+
 function save(){
-    localStorage.setItem("login",JSON.stringify(data));
-    money.innerText = data.money;
+  localStorage.setItem("users",JSON.stringify(users));
+  money.innerText = "💰 " + users[targetUser].money;
 }
+
+function logDiscord(type){
+  fetch(WEBHOOK_URL,{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({
+      embeds:[{
+        title:"💸 Admin Money Update",
+        color: type==="SET"?5763719:type==="ADD"?3447003:15158332,
+        fields:[
+          {name:"👮 Admin", value:login, inline:true},
+          {name:"👤 User", value:targetUser, inline:true},
+          {name:"📌 Action", value:type, inline:true},
+          {name:"💰 New Balance", value:String(users[targetUser].money)}
+        ],
+        timestamp:new Date()
+      }]
+    })
+  });
+}
+
 function logout(){
-    localStorage.clear();
-    location.href="login.html";
+  localStorage.removeItem("login");
+  location.href="login.html";
 }
 </script>
-</body>
-</html>
