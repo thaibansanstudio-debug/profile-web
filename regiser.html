@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Register</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body{
+  background:radial-gradient(circle at top,#020617,#020617 70%);
+  font-family:system-ui;
+  color:#e5e7eb;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.card{
+  background:#020617;
+  border:1px solid #1e293b;
+  box-shadow:0 0 60px #22c55e30;
+  padding:26px;
+  width:340px;
+  border-radius:18px;
+  text-align:center;
+}
+h2{color:#22c55e;margin-bottom:16px}
+input{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  background:#020617;
+  border:1px solid #1e293b;
+  border-radius:12px;
+  color:white;
+}
+button{
+  width:100%;
+  padding:12px;
+  margin-top:16px;
+  border:none;
+  border-radius:12px;
+  background:#22c55e;
+  color:#022c22;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:hover{opacity:.9}
+a{
+  display:block;
+  margin-top:14px;
+  color:#38bdf8;
+  text-decoration:none;
+}
+</style>
+</head>
+<body>
+
+<div class="card">
+  <h2>📝 Register</h2>
+
+  <input id="user" placeholder="Username">
+  <input id="pass" type="password" placeholder="Password">
+
+  <button onclick="register()">Create Account</button>
+  <a href="login.html">มีบัญชีแล้ว? Login</a>
+</div>
+
+<script src="auth.js"></script>
+</body>
+</html>
